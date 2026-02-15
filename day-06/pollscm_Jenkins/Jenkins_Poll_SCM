@@ -1,0 +1,60 @@
+JENKINS POLL SCM SETUP 
+
+1.  Configure Poll SCM inside Jenkins Freestyle Job
+    -   Poll SCM checks the Git repository at scheduled intervals for
+        new commits.
+2.  GitHub repository must be accessible from Jenkins server
+    -   Jenkins requires internet access to poll GitHub.
+3.  Open Jenkins → New Item → Freestyle Project
+    -   Creates a new Jenkins job for SCM polling.
+4.  Under Source Code Management select Git
+    -   Enables Git repository integration.
+5.  Repository URL:
+    https://github.com/Sudarsanaa-Mathan/nginx-node-alpine-docker-app.git
+    -   Specifies the GitHub repository to monitor.
+6.  Branches to build: */main
+    -   Configures Jenkins to monitor the main branch.
+7.  GitHub → Settings → Developer Settings → Personal Access Tokens →
+    Fine-grained tokens
+    -   Opens token generation section.
+8.  Click Generate new token
+    -   Starts token creation process.
+9.  Select Repository access → Only select repositories → Choose
+    nginx-node-alpine-docker-app
+    -   Grants access only to required repository.
+10. Under Repository permissions enable Contents: Read-only
+    -   Allows Jenkins to clone repository.
+11. Click Generate token and copy it immediately
+    -   Token is shown only once and used as Jenkins password.
+12. Click Add under Credentials → Select Username with password
+    -   Creates HTTPS authentication credential.
+13. Username: Sudarsanaa-Mathan
+    -   Enter your GitHub username.
+14. Password:
+    -   Paste generated GitHub token instead of password.
+15. Click Add and select the credential
+    -   Saves and activates authentication for repository access.
+16. Scroll to Build Triggers and select Poll SCM
+    -   Enables periodic repository checking.
+17. H/5 * * * *
+    -   Polls repository every 5 minutes for changes.
+18. Click Save
+    -   Stores job configuration.
+19. Go to GitHub → nginx-node-alpine-docker-app → index.html → Click
+    Edit
+    -   Opens file for modification.
+20. Add:
+    Poll SCM Test
+    -   Inserts a visible change to trigger polling.
+21. Click Commit changes
+    -   Creates a new commit in the repository.
+22. Wait up to 5 minutes
+    -   Jenkins automatically checks for new commits.
+23. Jenkins → Job → Build History
+    -   Displays automatically triggered build.
+24. Open Console Output and verify ‘Started by an SCM change’
+    -   Confirms build was triggered by Poll SCM.
+25. git –version
+    -   Verifies Git is installed on Jenkins server.
+26. ping github.com
+    -   Confirms Jenkins server has internet connectivity to GitHub.
