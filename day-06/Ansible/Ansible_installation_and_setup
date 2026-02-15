@@ -1,0 +1,63 @@
+ANSIBLE INSTALLATION & EXECUTION GUIDE 
+
+1.  Install Ansible on the Control Node (Ubuntu VM)
+    -   Ansible should be installed only on the machine that will manage
+        other servers.
+2.  Do NOT install Ansible on EC2 target machines
+    -   Managed nodes only require SSH and Python, not Ansible
+        installation.
+3.  sudo apt update
+    -   Updates the package list to ensure latest repository
+        information.
+4.  sudo apt install ansible -y
+    -   Installs Ansible and all required dependencies.
+5.  ansible –version
+    -   Verifies Ansible installation and displays installed version.
+6.  chmod 400 ubuntu-key.pem
+    -   Sets correct permissions for SSH private key.
+7.  ssh -i ubuntu-key.pem ubuntu@
+    -   Tests manual SSH login to target EC2 instance.
+8.  mkdir ansible-project
+    -   Creates a dedicated directory for Ansible project files.
+9.  cd ansible-project
+    -   Moves into the Ansible project directory.
+10. nano inventory.ini
+    -   Creates the inventory file to define managed servers.
+11. Add EC2 details inside inventory.ini
+    -   Specifies host IP, SSH user, and private key path for remote
+        access.
+12. ansible -i inventory.ini slaves -m ping
+    -   Tests connectivity between control node and managed EC2
+        instance.
+13. ansible -i inventory.ini slaves -a “uptime”
+    -   Executes a simple remote command to confirm remote execution
+        works.
+14. nano apache-playbook.yml
+    -   Creates an Ansible playbook file.
+15. ansible-playbook -i inventory.ini apache-playbook.yml
+    -   Executes the playbook on all defined slave servers.
+16. ssh -i ubuntu-key.pem ubuntu@13.218.95.205
+    -   Connects securely to the EC2 instance using the private key.
+17. exit
+    -   Exits from the EC2 instance and returns to the control node
+        terminal.
+18. ansible -i inventory.ini slaves -m ping
+    -   Verifies communication between control node and managed EC2
+        server.
+19. ansible-playbook -i inventory.ini apache-playbook.yml
+    -   Executes the Apache installation playbook on target servers.
+20. ansible -i inventory.ini slaves -a “sudo ss -tulpn”
+    -   Displays all listening ports and associated services on the
+        target server.
+21. ansible -i inventory.ini slaves -a “sudo lsof -iTCP:80 -sTCP:LISTEN”
+    -   Identifies which service is occupying port 80.
+22. ansible -i inventory.ini slaves -a “sudo systemctl stop nginx”
+    -   Stops nginx service to free port 80.
+23. ansible -i inventory.ini slaves -a “sudo systemctl disable nginx”
+    -   Prevents nginx from starting automatically on reboot.
+24. ansible -i inventory.ini slaves -a “sudo systemctl start apache2”
+    -   Starts Apache service after resolving port conflict.
+25. ansible -i inventory.ini slaves -a “sudo systemctl status apache2”
+    -   Verifies that Apache is active and running successfully.
+26. Open http://13.218.95.205 in browser
+    -   Confirms Apache web server is serving the deployed web page.
