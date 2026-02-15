@@ -1,0 +1,55 @@
+NGINX WEBSITE DEPLOYMENT USING DOCKER WITHOUT ALPINE
+
+1.  docker –version
+    -   Verifies that Docker is installed and displays its version.
+2.  mkdir mysite
+    -   Creates a new directory to store website files.
+3.  cd mysite
+    -   Navigates into the website project directory.
+4.  echo “
+    Hello from Nginx
+    ” > index.html
+    -   Creates a simple HTML file to be served by Nginx.
+5.  sudo docker run -d -p 8080:80 -v $(pwd):/usr/share/nginx/html nginx
+    -   Runs an Nginx container in detached mode, maps port 8080 to 80,
+        and mounts the current directory as the web root.
+6.  sudo docker ps
+    -   Displays running Docker containers to confirm Nginx is active.
+7.  ip a
+    -   Displays the system IP address to access the Nginx site from a
+        browser.
+8.  sudo docker stop $(sudo docker ps -q)
+    -   Stops all running Docker containers if the port is already in
+        use.
+9.  sudo docker rm $(sudo docker ps -aq)
+    -   Removes all Docker containers for a clean restart if needed.
+
+NGINX + NODE 18 ALPINE DEPLOYMENT 
+
+1.  cd ~
+    -   Navigates to the home directory to safely create the project
+        folder.
+2.  pwd
+    -   Displays the current working directory to confirm location.
+3.  mkdir nginx-node-app
+    -   Creates a new project directory for the Nginx Docker
+        application.
+4.  cd nginx-node-app
+    -   Enters the project directory.
+5.  nano index.html
+    -   Creates and edits the HTML file that will be served by Nginx.
+6.  nano Dockerfile
+    -   Creates and edits the Dockerfile to define the multi-stage Node
+        Alpine and Nginx build process.
+7.  sudo docker build -t nginx-node-app .
+    -   Builds the Docker image from the Dockerfile and tags it as
+        ‘nginx-node-app’.
+8.  sudo docker images
+    -   Displays all available Docker images to confirm successful image
+        creation.
+9.  sudo docker run -d -p 8083:80 –name nginx-container nginx-node-app
+    -   Runs the container in detached mode, mapping host port 8083 to
+        container port 80.
+10. sudo docker ps
+    -   Displays running containers to verify that the Nginx container
+        is active.
